@@ -8,6 +8,9 @@ mpv = MPV()
 queue = Queue()
 currently_playing = {}
 
+def worker():	
+    global queue, currently_playing
+
     while True:
         # Blocks until there is an item in the queue, so there won't be a lot of hardware usage
         item = queue.get()
