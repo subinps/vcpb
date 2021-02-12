@@ -7,7 +7,7 @@ import threading
 import queue
 import requests
 import youtube_dl
-from config import DUR_LIMIT, SUDO_USERS
+from config import DUR_LIMIT, SUDO_FILTER
 from helpers import run, format_duration, generate_image
 
 ydl_opts = {
@@ -29,7 +29,7 @@ def worker():
 
         if (
             int(info["duration"] / 60) > DUR_LIMIT
-            and item["sender_id"] not in SUDO_USERS
+            and item["sender_id"] not in SUDO_FILTER
         ):
             if "on_duration_limit" in item:
                 if item["on_duration_limit"]:
