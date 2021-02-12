@@ -36,20 +36,20 @@ inline_2: "Duration: {0} Views: {1}"
 inline_3: "Search Timed out! Try again."
 
 # Ban
-ban_1: "Succesfully Banned"
-ban_2: "User Already Banned"
+ban_1: "Succesfully Banned."
+ban_2: "User Already Banned."
 ban_3: "This User is not a Banned user."
 ban_4: "Succesfully Unbanned."
 ban_5: "Currently Banned Users are: {}"
 ban_9: "Go Die!!"
 
 #admins 
-admin_1: "Succesfully Promoted as SUDO USER"
-admin_2: "Demoted the User"
-admin_3: "Already a SUDO USER"
-admin_4: "Not a SUDO USER"
+admin_1: "Succesfully Promoted as SUDO USER."
+admin_2: "Demoted the User."
+admin_3: "Already a SUDO USER."
+admin_4: "Not a SUDO USER."
 admin_5: "This is a Banned User , Unban first to promote as SUDO USER."
-admin_6: "Please Specify User ID"
+admin_6: "Please Specify User ID."
 admin_7: "This is a SUDO USER, Please Demote First."
 admin_8: "Current SUDO USERS are: {}"
 # Play
