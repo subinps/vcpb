@@ -5,7 +5,7 @@ from pyrogram.handlers import MessageHandler
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import player
 from helpers import wrap
-from config import SUDO_USERS
+from config import SUDO_FILTER, BANNED_USERS
 from strings import _
 
 
@@ -14,7 +14,10 @@ from strings import _
 )
 @wrap
 def volume(client, message):
-    if len(message.text.split()) == 2 and message.from_user.id in SUDO_USERS:
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if len(message.text.split()) == 2 and message.from_user.id in SUDO_FILTER:
         try:
             volume = int(message.text.split()[1])
             if volume in range(1, 101):
@@ -37,7 +40,7 @@ def volume(client, message):
     current_volume = "".join(re.search(r"Volume\:(.+)\n", subprocess.check_output(
         ["pactl", "list", "sinks"]).decode()).group(0).split()).split("/")[1]
 
-    if message.from_user.id in SUDO_USERS:
+    if message.from_user.id in SUDO_FILTER:
         message.reply_text(
             _("volume_1").format(current_volume),
             reply_markup=InlineKeyboardMarkup(

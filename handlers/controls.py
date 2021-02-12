@@ -3,15 +3,21 @@ from pyrogram import Client, filters
 from pyrogram.handlers import MessageHandler
 import player
 from helpers import wrap, State
-from config import SUDO_FILTER
+from config import SUDO_FILTER, BANNED_USERS
 from strings import _
 
 
 @Client.on_message(
-    filters.command("pause", "/") & SUDO_FILTER
+    filters.command("pause", "/")
 )
 @wrap
 def pause(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     if not player.mpv.pause:
         player.mpv.pause = True
         message.reply_text(_("pause_1"))
@@ -23,10 +29,16 @@ def pause(client, message):
     (
         filters.command("resume", "/")
         | filters.command("play", "/")
-    ) & SUDO_FILTER
+    )
 )
 @wrap
 def resume(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     if player.mpv.pause:
         player.mpv.pause = False
         message.reply_text(_("pause_3"))
@@ -35,10 +47,16 @@ def resume(client, message):
 
 
 @Client.on_message(
-    filters.command("skip", "/") & SUDO_FILTER
+    filters.command("skip", "/")
 )
 @wrap
 def skip(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     if player.mpv.filename:
         player.mpv.stop()
         message.reply_text(_("skip_1"))
@@ -47,9 +65,15 @@ def skip(client, message):
 
 
 @Client.on_message(
-    filters.command("seekf", "/") & SUDO_FILTER
+    filters.command("seekf", "/")
 )
 def seekf(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     if player.mpv.filename or player.mpv.pause:
         try:
             player.mpv.seek(int(message.command[1]))
@@ -61,9 +85,15 @@ def seekf(client, message):
 
 
 @Client.on_message(
-    filters.command("seekb", "/") & SUDO_FILTER
+    filters.command("seekb", "/")
 )
 def seekb(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     if player.mpv.filename or player.mpv.pause:
         try:
             player.mpv.seek(-int(message.command[1]))

@@ -2,7 +2,8 @@ from pyrogram import Client, filters
 from pyrogram.handlers import MessageHandler
 from handlers import all_help
 from helpers import wrap
-from config import SUDO_USERS
+from config import SUDO_FILTER
+from config import BANNED_USERS
 from strings import _
 
 
@@ -33,8 +34,11 @@ def admin():
 )
 @wrap
 def help(client, message):
+    if message.from_user.id in BANNED_USERS:
+            message.reply_text(_("ban_9"))
+            return
     message.reply_text("**" + _("help_1") + "**" + "\n" + user() + "\n" + "**" + _(
-        "help_2") + "**" + "\n" + admin() if message.from_user.id in SUDO_USERS else user())
+        "help_2") + "**" + "\n" + admin() if message.from_user.id in SUDO_FILTER else user())
 
 
 __help__ = {

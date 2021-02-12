@@ -4,7 +4,7 @@ import requests
 from database import playlists as db
 import player
 from helpers import wrap, func
-from config import SUDO_FILTER, LOG_GROUP
+from config import SUDO_FILTER, LOG_GROUP, BANNED_USERS
 from ytdl import download
 from strings import _
 
@@ -12,9 +12,15 @@ from strings import _
 db.create_playlist("custom")
 
 
-@Client.on_message(filters.command("play_playlist", "/") & SUDO_FILTER)
+@Client.on_message(filters.command("play_playlist", "/"))
 @wrap
 def play_playlist(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     playlist = db.get_playlist("custom")["items"]
 
     if not playlist:
@@ -56,16 +62,28 @@ def play_playlist(client, message):
             )
 
 
-@Client.on_message(filters.command("clear_playlist", "/") & SUDO_FILTER)
+@Client.on_message(filters.command("clear_playlist", "/"))
 def clear_playlist(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     if db.reset_playlist("custom", []):
         message.reply_text(_("playlist_10"))
     else:
         message.reply_text(_("playlist_1"))
 
 
-@Client.on_message(filters.command("playlist", "/") & SUDO_FILTER)
+@Client.on_message(filters.command("playlist", "/"))
 def playlist(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     all_ = db.get_playlist("custom")["items"]
 
     if not all_:
@@ -90,8 +108,14 @@ def playlist(client, message):
         )
 
 
-@Client.on_callback_query(filters.regex(".+playlist") & SUDO_FILTER)
+@Client.on_callback_query(filters.regex(".+playlist"))
 def playlist_callback(client, query):
+    if query.from_user.id in BANNED_USERS:
+        query.reply_text(_("ban_9"))
+        return
+    if query.from_user.id not in SUDO_FILTER:
+        query.reply_text(_("n4u"))
+        return
     cp = player.currently_playing
 
     if query.data.startswith("add_to"):

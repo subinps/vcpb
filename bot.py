@@ -19,19 +19,28 @@ if __name__ == "__main__":
     from pyrogram.handlers import MessageHandler
     import player
     from config import SUDO_FILTER
+    from config import BANNED_USERS
     from strings import _
 
     def stop_and_restart():
         app.stop()
         os.system("git pull")
         os.execl(sys.executable, sys.executable, *sys.argv)
+    
 
-    @app.on_message(filters.command("r", "/") & SUDO_FILTER)
+    @app.on_message(filters.command("r", "/"))
     def restart(client, message):
+        if message.from_user.id in BANNED_USERS:
+            message.reply_text(_("ban_9"))
+            return
+        if message.from_user.id not in SUDO_FILTER:
+            message.reply_text(_("n4u"))
+            return
         message.reply_text(_("bot"))
         Thread(
             target=stop_and_restart
         ).start()
 
-    app.start()
+        
+    app.start() 
     idle()

@@ -11,13 +11,10 @@ TOKEN = "1234567890:ABCdEFgHij1KlMNop_QrStuVWxyzuA-EmXI"
 # Your MongoDB URI (using a database named "vcpb"), if you don't provide, you can't use the playlist feature and wont see now playing message
 MONGO_DB_URI = ""
 
-# The IDs of the users which can stream, skip, pause and change volume
-SUDO_USERS = [
-    383407735,
-    951435494,
-    1392620345
-]
-
+# The IDs of the users which can stream, skip, pause and change volume, seperate by space.
+SUDO_USERS = "1111111111"
+BANNED_USERS = "222222222"
+OWNER = set(int(x) for x in ("").split())
 # The ID of the group where your bot streams
 GROUP = -1001402753006
 
@@ -32,4 +29,5 @@ DUR_LIMIT = 5
 
 # No need to touch the following.
 LOG_GROUP = GROUP if MONGO_DB_URI != "" else None
-SUDO_FILTER = filters.user(SUDO_USERS)
+BANNED_USERS = set(int(x) for x in (BANNED_USERS).split())
+SUDO_FILTER = set(int(x) for x in ("SUDO_USERS").split())

@@ -2,13 +2,19 @@ from pyrogram import Client, filters
 from pyrogram.handlers import MessageHandler
 import player
 from helpers import wrap
-from config import SUDO_FILTER
+from config import SUDO_FILTER, BANNED_USERS
 from strings import _
 
 
-@Client.on_message(filters.command("clearqueue", "/") & SUDO_FILTER)
+@Client.on_message(filters.command("clearqueue", "/"))
 @wrap
 def clear_queue(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
+    if message.from_user.id not in SUDO_FILTER:
+        message.reply_text(_("n4u"))
+        return
     try:
         with player.queue.mutex:
             player.queue.queue.clear()
@@ -20,6 +26,9 @@ def clear_queue(client, message):
 @Client.on_message(filters.command("queue", "/"))
 @wrap
 def queue(client, message):
+    if message.from_user.id in BANNED_USERS:
+        message.reply_text(_("ban_9"))
+        return
     qsize = player.queue.qsize()
 
     if qsize == 0:

@@ -5,7 +5,7 @@ from ytdl import download
 import requests
 import player
 from helpers import wrap, func
-from config import SUDO_FILTER, LOG_GROUP
+from config import SUDO_FILTER, LOG_GROUP, BANNED_USERS
 from strings import _
 
 
@@ -14,6 +14,8 @@ from strings import _
 )
 @wrap
 def message(client, message):
+    if message.from_user.id in BANNED_USERS:
+        return
     if message.text.startswith("/"):
         return
 

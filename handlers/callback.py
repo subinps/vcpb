@@ -2,12 +2,18 @@ import subprocess
 from pyrogram import Client, filters
 from pyrogram.handlers import CallbackQueryHandler
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from config import SUDO_FILTER
+from config import SUDO_FILTER, BANNED_USERS
 from strings import _
 
 
-@Client.on_callback_query(filters.regex(".+volume") & SUDO_FILTER)
+@Client.on_callback_query(filters.regex(".+volume"))
 def callback(client, query):
+    if query.from_user.id in BANNED_USERS:
+        query.reply_text(_("ban_9"))
+        return
+    if query.from_user.id not in SUDO_FILTER:
+        query.reply_text(_("n4u"))
+        return
     current_volume = int(query.message.text.split()[-1].replace("%", ""))
 
     if query.data == "decrease_volume":
